@@ -28,7 +28,7 @@ var crash = 'false';
 //##### the bird class #####
  var bird = function() {
    this.pos_y = 100;
-   this.pos_x = 100;
+   this.pos_x = 150;
    this.player_name;
    this.lives = 3;
    this.scoree = 0;
@@ -96,7 +96,9 @@ bird.prototype.whencrash = function () {
   clearInterval(grav);
   clearInterval(wingmov);
   clearInterval(scoreint);
+  img.src = "images/5.png"
   setTimeout(function() {
+    img.src = birdwings;
     this.wingmove();
     this.gravity();
     this.printscore();
@@ -163,7 +165,6 @@ function gameloop() {
     b1.lives = 3;
     b1.wingmove();
     b1.gravity();
-    b1.birdjump();
     b1.printscore();
     startpage.style.display = 'none';
     gamepage.style.display = 'block';
@@ -184,10 +185,12 @@ var obstacles = function() {
 obstacles.prototype.setposx = function () {
   this.posx += 10;
   obsimage.style.right = this.posx +"px";
-  if (this.posx > window.innerWidth-70) {
+  if (this.posx > window.innerWidth-140) {
     this.posx = 10;
-    obsimage.src = imagesarray[Math.floor(Math.random() * imagesarray.length)];
-    obsimage.height = heightarray[Math.floor(Math.random() * heightarray.length)];
+    setTimeout(function() {
+      obsimage.src = imagesarray[Math.floor(Math.random() * imagesarray.length)];
+      obsimage.height = heightarray[Math.floor(Math.random() * heightarray.length)];
+    },100)
   }
 };
 obstacles.prototype.getposx = function () {
