@@ -16,6 +16,10 @@ var playagainbtn = document.getElementById('playagain');
 var obsimage = document.getElementById('obsimage');
 var imagesarray = ["images/obs2.png","images/obs1.png"];
 var heightarray = ["70","90","110","130","150","170","190","210,230,300"];
+var medal1 = document.getElementById('stmedal')
+var medal2 = document.getElementById('ndmedal')
+var medal3 = document.getElementById('thmedal')
+var header = document.getElementById('header-bar')
 var level = document.getElementById("level")
 var choosebtn = document.getElementById("choose")
 var levelsimg = document.getElementById("levels")
@@ -67,6 +71,15 @@ var crash = 'false';
  bird.prototype.setscore = function () {
    this.scoree += 2;
    score.innerHTML = `Score: ${this.scoree}`;
+   if (this.scoree >= 10) {
+     medal1.style.opacity = "1";
+   }
+   if (this.scoree >= 20) {
+     medal2.style.opacity = "1";
+   }
+   if (this.scoree >= 30) {
+     medal3.style.opacity = "1";
+   }
  };
  bird.prototype.getscore = function () {
    return this.scoree;
@@ -105,7 +118,6 @@ bird.prototype.whencrash = function () {
   clearInterval(scoreint);
   img.src = "images/5.png"
   setTimeout(function() {
-    img.src = birdwings;
     this.wingmove();
     this.gravity();
     this.printscore();
@@ -117,7 +129,7 @@ bird.prototype.set_y = function () {
   displaylives.src = birdwings[0];
   displaylives1.innerHTML = ` x${this.lives}`;
   this.crash();
-  if (this.pos_y > 500 && this.lives > 0) {
+  if (this.pos_y > 430 && this.lives > 0) {
     this.pos_y = 20;
     this.lives--;
     displaylives1.innerHTML = ` x${this.lives}`;
@@ -131,6 +143,7 @@ bird.prototype.set_y = function () {
     gamepage.style.display = 'none';
     endgame.src = "images/Replay.png";
     endpage.style.display = 'block';
+    header.style.display = 'block';
     showscore.innerHTML = `${this.player_name} Your Final Score Is: ${this.scoree}`
   }
 };
@@ -140,6 +153,7 @@ playbutton.addEventListener("click", function() {
   images();
   startpage.style.display = 'none';
   gamepage.style.display = 'block';
+  header.style.display = 'block';
   gameloop();
 })
 /////imgaes/////////////////
@@ -158,14 +172,16 @@ function images() {
 ////////////////////levels////////////
     showlevel.addEventListener("click", function() {
     startpage.style.display = 'none';
-    level.style.display = 'block';ء
+    level.style.display = 'block';
+
 })
 
 level_1_btn.addEventListener("click" , function () {
     images();
     level.style.display = 'none';
-    gamepage.style.backgroundImage = "url('images/12.png')";
+    gamepage.style.backgroundImage = "url('images/b1.png')";
     gamepage.style.display = 'block';
+    header.style.display = 'block';
     gameloop();
 
 });
@@ -173,8 +189,10 @@ level_1_btn.addEventListener("click" , function () {
 level_2_btn.addEventListener("click" , function () {
     images();
     level.style.display = 'none';
-    gamepage.style.backgroundImage = "url('images/2.jpg')";
+    gamepage.style.backgroundImage = "url('images/b2.png')";
     gamepage.style.display = 'block';
+    header.style.display = 'block';
+
     gameloop();
 
 });
@@ -182,8 +200,9 @@ level_2_btn.addEventListener("click" , function () {
 level_3_btn.addEventListener("click" , function () {
     images();
     level.style.display = 'none';
-    gamepage.style.backgroundImage = "url('images/3.jpg')";
+    gamepage.style.backgroundImage = "url('images/b3.png')";
     gamepage.style.display = 'block';
+    header.style.display = 'block';
     gameloop();
 
 });
@@ -195,22 +214,16 @@ function gameloop() {
   var obs = new obstacles;
   obs.obsmove();
 
-  ////
-    if(b1.scoree === 4)
-    {
-        gamepage.style.backgroundImage = "url('images/12.png')";
-    }
-
   b1.setplayername(playername.value);
   var printname = b1.getplayername();
   displayname.innerHTML = `Player: ${printname}`;
-
   b1.wingmove();
   b1.gravity();
-  //b1.birdjump();
   b1.printscore();
+
   const Env = new Environment()
   Env.movesky();
+
   playagain.addEventListener("click", function() {
     b1.scoree = 0;
     b1.pos_y = 20;
@@ -218,13 +231,12 @@ function gameloop() {
     b1.wingmove();
     b1.gravity();
     b1.printscore();
+
     startpage.style.display = 'none';
     gamepage.style.display = 'block';
     endpage.style.display = 'none';
   })
 }
-////////////fff////////score
-
 
 
 //######## the obstacles class and proto types ########
@@ -236,14 +248,12 @@ var obstacles = function() {
   this.posy = 0;
 }
 obstacles.prototype.setposx = function () {
-  this.posx += 5;
+  this.posx += 4;
   obsimage.style.right = this.posx +"px";
   if (this.posx >= 800) {
     this.posx = -50;
-    setTimeout(function() {
       obsimage.src = imagesarray[Math.floor(Math.random() * imagesarray.length)];
       obsimage.height = heightarray[Math.floor(Math.random() * heightarray.length)];
-    },100)
   }
 };
 obstacles.prototype.getposx = function () {
@@ -264,7 +274,7 @@ const  Environment = function () {
 };
 Environment.prototype.moveground = function()
 {
-    this.currentpos -= 2 ;
+    this.currentpos -= 5 ;
     gamepage.style.backgroundPositionX =  this.currentpos + "px"
 
 };
