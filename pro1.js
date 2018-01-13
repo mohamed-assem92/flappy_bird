@@ -14,8 +14,8 @@ var score = document.getElementById('score');
 var showscore = document.getElementById('showscore');
 var playagainbtn = document.getElementById('playagain');
 var obsimage = document.getElementById('obsimage');
-var imagesarray = ["images/obs2.png","images/obs1.png"];
-var heightarray = ["70","90","110","130","150","170","190","210,230,300"];
+var imagesarray = ["images/obs2.png","images/obs1.png","images/obs3.png","images/obs4.png"];
+var heightarray = ["110","130","150","170","190","210","230","250,270,290"];
 var medal1 = document.getElementById('stmedal')
 var medal2 = document.getElementById('ndmedal')
 var medal3 = document.getElementById('thmedal')
@@ -266,7 +266,7 @@ obstacles.prototype.getposy = function () {
   return this.posy;
 };
 obstacles.prototype.obsmove = function () {
-  moveleft = setInterval(this.setposx.bind(this), 50);
+  moveleft = setInterval(this.setposx.bind(this), 30);
 };
 ///////////environment
 const  Environment = function () {
