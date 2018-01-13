@@ -237,7 +237,7 @@ gameloop.prototype.crashDetection = function(){
   this.obsimage = document.getElementById('newobsimage')
 
     for (var i = 0; i <this.level * 3 ; i++) {
-      if ( parseInt(window.getComputedStyle(this.obsimage.children[i]).left) <= this.birdplayer.pos_x) {
+      if ( parseInt(window.getComputedStyle(this.obsimage.children[i]).left)-50 <= this.birdplayer.pos_x) {
 	      	if (this.birdplayer.pos_y+20 >= parseInt(window.getComputedStyle(this.obsimage.children[i]).top) ){
 	      	    this.birdplayer.pos_y = 20;
 	            this.birdplayer.lives--;
