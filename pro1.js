@@ -26,7 +26,7 @@ var endgame = document.getElementById('endgame');
 var playagainbtn = document.getElementById('playagain');
 // obstacle images
 var imagesarray = ["images/obs2.png","images/obs1.png"];
-var heightarray = ["100","130","160","190","220","250","280","310,340,380"];
+var heightarray = ["70","90","110","130","150","170","190","210,230,300"];
 // bird attributes
 var birdwings = [];
 var count = 0;
@@ -140,7 +140,7 @@ bird.prototype.wingmove = function () {
 // ... need to be moved into the environment class
  bird.prototype.printscore = function () {
    score.innerHTML = `Score: ${this.scoree}`;
-   scoreint = setInterval(this.setscore.bind(this),5000);
+   scoreint = setInterval(this.setscore.bind(this),3000);
  };
 
 bird.prototype.main = function (){
