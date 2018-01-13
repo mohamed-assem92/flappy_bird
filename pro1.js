@@ -25,7 +25,7 @@ img.height = 60;
 var endgame = document.getElementById('endgame');
 var playagainbtn = document.getElementById('playagain');
 // obstacle images
-var imagesarray = ["images/obs2.png","images/obs1.png","images/obs3.png","images/obs4.png"];
+var imagesarray = ["images/obs2.png","images/obs1.png"];
 var heightarray = ["100","130","160","190","220","250","280","310,340,380"];
 // bird attributes
 var birdwings = [];
@@ -178,6 +178,36 @@ obstacle.prototype.move = function () {
     }.bind(this), 50);
 };
 
+
+// flyingObsImage
+
+//##########################     Flying Obstacles Class    #####
+var flyingObstacle = function(x = -50, y = 100  , dx = 5) {
+  obstacle.call(this, x, y, dx );
+  // this.pos_x = x; this.pos_y = y ; this.dx = dx;
+  this.obsimage = document.createElement("img");
+  this.myDiv = document.getElementById('flyingObsImage');
+  this.myDiv.appendChild(this.obsimage);
+  this.obsimage.width = 50;
+  this.obsimage.setAttribute('id','flyingObsId');
+  this.obsimage.src = 'images/enemy.png';
+  this.obsimage.style.top = Math.floor(Math.random()*100) +"px";
+}
+
+flyingObstacle.prototype = Object.create(obstacle.prototype);
+flyingObstacle.prototype.constructor = obstacle;
+
+flyingObstacle.prototype.move = function () {
+  moveleft = setInterval( function(){
+      this.pos_x += this.dx;
+      this.obsimage.style.right = this.pos_x +"px";
+
+      if (this.pos_x > 800) {
+        this.pos_x = -700;
+        this.obsimage.style.top = Math.floor(Math.random() *150)+"px";
+      }
+    }.bind(this), 50);
+};
 //##########################     environment Class    #####
 
 const  Environment = function (x = 0 , y = 0, dx = 2) {
@@ -219,11 +249,15 @@ gameloop = function (level = 1) {
 
 // creating obstacles
   this.groundObstacles = [];
+  this.flyingObstacle = [];
   this.i = 0;
 
   clback = function(){
     this.groundObstacles[this.i] = new obstacle(10,0,this.level*10);
     this.groundObstacles[this.i].move();
+
+    // this.flyingObstacle[this.i] = new flyingObstacle(-700,5,this.level*10)
+    // this.flyingObstacle[this.i].move();
     this.i++;
     if(this.i < this.level * 3){
       setTimeout(clback,1000)
@@ -232,12 +266,13 @@ gameloop = function (level = 1) {
   clback();
 };
 
-gameloop.prototype.crashDetection = function(){
-  this.crashDetInt = setInterval(function () {
-  this.obsimage = document.getElementById('newobsimage')
+  gameloop.prototype.crashDetection = function(){
+    this.crashDetInt = setInterval(function () {
+    this.obsimage = document.getElementById('newobsimage');
+    this.obsFlyingImage = document.getElementById('flyingObsImage');
 
     for (var i = 0; i <this.level * 3 ; i++) {
-      if ( parseInt(window.getComputedStyle(this.obsimage.children[i]).left) <= this.birdplayer.pos_x) {
+      if ( parseInt(window.getComputedStyle(this.obsimage.children[i]).left)-50 <= this.birdplayer.pos_x) {
 	      	if (this.birdplayer.pos_y+20 >= parseInt(window.getComputedStyle(this.obsimage.children[i]).top) ){
 	      	    this.birdplayer.pos_y = 20;
 	            this.birdplayer.lives--;
@@ -245,6 +280,16 @@ gameloop.prototype.crashDetection = function(){
 	            this.whencrash();
 	      	}
       	}
+
+        // if ( parseInt(window.getComputedStyle(this.obsFlyingImage.children[i]).left)-50 <= this.birdplayer.pos_x) {
+        //     if (this.birdplayer.pos_y+30 <= parseInt(window.getComputedStyle(this.obsFlyingImage.children[i]).top)
+        //     && this.birdplayer.pos_y-30 >= parseInt(window.getComputedStyle(this.obsFlyingImage.children[i]).bottom)){
+        //         this.birdplayer.pos_y = 20;
+        //         this.birdplayer.lives--;
+        //         displaylives1.innerHTML = ` x${this.birdplayer.lives}`;
+        //         this.whencrash();
+        //     }
+        //   }
     }
   }.bind(this), 50);
 }
@@ -264,6 +309,7 @@ if (this.birdplayer.lives > 0) {
 	  setTimeout(function() {
     img.src = birdwings[0];
     this.birdplayer.main();
+    this.Env.move();
   }.bind(this), 1000)
 }
 
